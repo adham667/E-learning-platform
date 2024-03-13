@@ -1,10 +1,19 @@
 import { Request, Response } from 'express';
-import {AddCourse, UpdateCourse, DeleteCourse, getEnrolledStudents, enrollStudent, dropCourse, getAllCourses, getCourse} from '../Services/CourseServices';
+import {AddCourse, UpdateCourse, DeleteCourse, getEnrolledStudents, enrollStudent, dropCourse, getAllCourses, getCourse, getCoursesForStudent} from '../Services/CourseServices';
+import Course from '../types/course';
+
+
 
 const createCourseController = async (req: Request, res: Response) => {
-  const { professorId } = req.params;
+  const { professor } = req.params;
+  const {title, description} = req.body;
+  const newcourse:Course={
+    title,
+    description,
+    professor,
+  }
   try {
-    const course = await AddCourse( req.body, professorId);
+    const course = await AddCourse( newcourse);
     res.status(201).json(course);
   } catch (error) {
     res.status(500).json({ message: "something went wrong" });
@@ -43,8 +52,9 @@ const getEnrolledStudentsController = async (req: Request, res: Response) => {
 
 const enrollStudentController = async (req: Request, res: Response) => {
     const { courseId } = req.params;
+    const {studentId} = req.body;
     try {
-      const enrolledStudent = await enrollStudent(courseId, req.body.studentId);
+      const enrolledStudent = await enrollStudent(courseId, studentId);
       res.status(201).json(enrolledStudent);
     } catch (error) {
       res.status(500).json({ message: "something went wrong" });
@@ -53,8 +63,12 @@ const enrollStudentController = async (req: Request, res: Response) => {
   
   const dropCourseController = async (req: Request, res: Response) => {
     const { courseId } = req.params;
+    const studentId = req.query?.studentId as string | undefined;
     try {
-      await dropCourse(courseId, req.body.studentId);
+      if (!studentId) {
+        throw new Error('Student ID is missing');
+      }
+      await dropCourse(courseId, studentId);
       res.json({ message: 'Student dropped from course successfully' });
     } catch (error) {
       res.status(500).json({ message: "something went wrong" });
@@ -82,6 +96,16 @@ const enrollStudentController = async (req: Request, res: Response) => {
       res.status(500).json({ message: "something went wrong" });
     }
   };
+  const getCoursesForStudentController = async (req:Request, res:Response) => {
+    const { studentId } = req.params;
+  
+    try {
+      const courses = await getCoursesForStudent(studentId);
+      res.status(200).json(courses);
+    } catch (error) {
+      res.status(500).json({ message: "something went wrong" });
+    }
+  };
   
   export default {
     createCourseController,
@@ -92,5 +116,6 @@ const enrollStudentController = async (req: Request, res: Response) => {
     dropCourseController,
     getAllCoursesController,
     getCourseController,
+    getCoursesForStudentController
   };
   

@@ -23,11 +23,11 @@ const getStudentGrades = async (studentId: string) => {
 
 const getSpecificStudentGrades = async (studentId: string, courseId: string) => {
     try {
-    const grade = await Grade.findOne({ student: studentId, course: courseId }).populate('course');
+    const grade = await Grade.findOne({ student: studentId, course: courseId });
     if(!grade){
-        throw new Error("No grade found");
+        return "no grade" ;
     }
-    return grade;
+    return grade.grade;
     } catch (error) {
     throw error;
     }

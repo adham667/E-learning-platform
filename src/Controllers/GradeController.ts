@@ -19,7 +19,7 @@ const getStudentGradesController = async (req: Request, res: Response) => {
     }
     else{
         const grade = await getSpecificStudentGrades(studentId, courseId);
-        res.json(grade);
+        res.json({grade});
     }
   } catch (error) {
     res.status(500).json({ message: "something went wrong" });

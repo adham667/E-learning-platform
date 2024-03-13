@@ -5,7 +5,7 @@ import userType from "../types/user"
 import gradeType from "../types/grade"
 import courseType from "../types/course"
 
-const AddCourse = async (course:courseType, profId:string) => {
+const AddCourse = async (course:courseType) => {
     try {
         const addedCourse = await Course.create(course);
         return addedCourse;
@@ -127,4 +127,14 @@ const getCourse = async (courseId:String) => {
 };
 
 
-export {AddCourse, UpdateCourse, DeleteCourse, getEnrolledStudents, enrollStudent, dropCourse, getAllCourses, getCourse};
+const getCoursesForStudent = async (studentId:string) => {
+    try {
+      const courses = await Course.find({ students: studentId });
+      return courses;
+    } catch (error) {
+      throw new Error('Error fetching courses for student');
+    }
+  };
+
+
+export {AddCourse, UpdateCourse, DeleteCourse, getEnrolledStudents, enrollStudent, dropCourse, getAllCourses, getCourse, getCoursesForStudent};

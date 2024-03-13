@@ -5,9 +5,12 @@ import mongoose from "mongoose";
 const userRoute = require("./Routes/UserRoutes");
 const courseRoute = require("./Routes/CourseRoutes");
 const gradeRoute = require("./Routes/GradeRoutes")
+const cors = require('cors'); 
 
 const app = express();
 app.use(express.json())
+app.use(cors());
+
 app.use("/user",userRoute)
 app.use("/courses", courseRoute)
 app.use('/grades', gradeRoute)
@@ -24,6 +27,6 @@ mongoose.connect(connectionString).then((value) => {
 
 app.listen(3001, function(){
 
-    console.log("listening on port 3000");
+    console.log("listening on port 3001");
     
 })

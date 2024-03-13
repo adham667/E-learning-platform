@@ -4,6 +4,8 @@ import userType from '../types/user'
 const AddUser = async (userData:userType) => {
     try {
         const addedUser = await User.create(userData);
+        console.log(userData);
+        
         return addedUser;
     } catch (error) {
         console.error('Error adding user:', error);
@@ -37,4 +39,25 @@ const DeleteUser = async (userId:String) => {
 }
 
 
-export{AddUser, UpdateUser, DeleteUser};
+const getUser = async(email:String)=>{
+    try{
+        const user = await User.findOne({email})
+        return user;
+    }
+    catch(error){
+        throw error
+    }
+}
+
+const getUserById = async (userId:string)=> {
+    try {
+        const user = await User.findById(userId);
+        return user;
+    } catch (error) {
+        throw new Error('Error fetching user');
+    }
+}
+
+
+
+export{AddUser, UpdateUser, DeleteUser, getUser, getUserById};
