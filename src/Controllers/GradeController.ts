@@ -1,9 +1,16 @@
 import { Request, Response } from 'express';
 import { AssignGrade, getStudentGrades, getSpecificStudentGrades, getAverageCourseGrade } from '../Services/GradeServices';
+import Grade from '../types/grade';
 
 const assignGradeController = async (req: Request, res: Response) => {
   try {
-    const addedGrade = await AssignGrade(req.body);
+    const {student, course, grade} = req.body
+    const newgrade: Grade={
+      student, 
+      course,
+      grade
+    }
+    const addedGrade = await AssignGrade(newgrade);
     res.status(201).json(addedGrade);
   } catch (error) {
     res.status(500).json({ message: "something went wrong" });

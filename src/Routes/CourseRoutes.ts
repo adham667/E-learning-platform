@@ -4,7 +4,7 @@ import courseController from '../Controllers/CourseController';
 const router = express.Router();
 
 
-router.post('/create/:professorId', courseController.createCourseController);
+router.post('/create/:professor', courseController.createCourseController);
 router.put('/:courseId', courseController.updateCourseController);
 router.delete('/:courseId', courseController.deleteCourseController);
 router.get('/:courseId/students', courseController.getEnrolledStudentsController);
