@@ -16,14 +16,15 @@ const createCourseController = async (req: Request, res: Response) => {
     const course = await AddCourse( newcourse);
     res.status(201).json(course);
   } catch (error) {
-    res.status(500).json({ message: "something went wrong" });
+    res.status(500).json({ message: "something went wrong creating course" });
   }
 };
 
 const updateCourseController = async (req: Request, res: Response) => {
   const { courseId } = req.params;
+  const {title, description} = req.body;
   try {
-    const updatedCourse = await UpdateCourse(req.body, courseId);
+    const updatedCourse = await UpdateCourse(title, description, courseId);
     res.json(updatedCourse);
   } catch (error) {
     res.status(500).json({ message: "something went wrong" });

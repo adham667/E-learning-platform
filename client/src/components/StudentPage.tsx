@@ -4,6 +4,7 @@ import axios from 'axios';
 import "../Style.css"
 
 import { useLocation } from 'react-router-dom';
+import LogutButton from './LogutButton';
 
 
 
@@ -76,7 +77,6 @@ const StudentPage = () => {
             const names = Object.fromEntries(
                 responses.map(response => {
                     const professor = response.data;
-                    console.log(`${professor.firstName} ${professor.lastName}`);
                     return [professor._id, `${professor.firstName} ${professor.lastName}`];
                 })
             );
@@ -87,11 +87,14 @@ const StudentPage = () => {
         }
     };
     useEffect(() => {
+        let gradesArr: string[] =[];
         const fetchGrades = async (courseId:string) => {
             try {
-                const response = await axios.get(`http://localhost:3001/grades/${user._id}/${courseId}`);
-                setgrades(response.data);
-                console.log(grades[0]);
+                const studentId = user._id
+                const response = await axios.get(`http://localhost:3001/grades/${studentId}/${courseId}`);
+                const newgrade= response.data.grade
+                gradesArr.push(newgrade)
+                
                 
             } catch (error) {
                 console.error('Error fetching courses:', error);
@@ -100,10 +103,12 @@ const StudentPage = () => {
         filteredCourses.forEach((course) => {
                 fetchGrades(course._id);
         });
+        setgrades(gradesArr);
     }, [filteredCourses,user._id]);
     
     return (
         <div>
+            <LogutButton/>
             <h1>StudentPage</h1>
             <h2>My courses</h2>
             <table className="table">

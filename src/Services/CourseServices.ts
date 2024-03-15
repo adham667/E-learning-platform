@@ -4,24 +4,27 @@ import mongoose, { ObjectId } from 'mongoose';
 import userType from "../types/user"
 import gradeType from "../types/grade"
 import courseType from "../types/course"
+import Grade from "../Models/Grade";
 
 const AddCourse = async (course:courseType) => {
     try {
         const addedCourse = await Course.create(course);
         return addedCourse;
     } catch (error) {
-        console.error('Error adding user:', error);
         throw error;
     }
 };
 
-const UpdateCourse = async (updatedCourse:courseType, courseID:String) => {
+const UpdateCourse = async (title:string, description:string, courseID:String) => {
     try{
-        const course = await Course.findByIdAndUpdate(courseID, updatedCourse).exec();
+        const course = await Course.findById(courseID);
         if (!course) {
-            throw new Error('User not found');
+            throw new Error('course not found');
         }
-        return course;
+        course.title = title
+        course.description = description
+        const updatedcourse = await Course.findByIdAndUpdate(courseID, course).exec();
+        return updatedcourse;
     } 
     catch (error) {
         throw error;
@@ -33,7 +36,7 @@ const DeleteCourse = async (courseId:String) => {
     try{
         const course = await Course.findByIdAndDelete(courseId).exec();
         if (!course) {
-            throw new Error('User not found');
+            throw new Error('course not found');
         }
     } 
     catch (error) {
@@ -98,6 +101,7 @@ const dropCourse = async (courseId: string, studentId: string) => {
         throw new Error("Student not enrolled in the course");
     }
     course.students = course.students.filter(id => id.toString() !== studentId);
+    const grade = await Grade.findOneAndDelete({ student: studentId, course: courseId });
     await course.save();
     } catch (error) {
     throw error;

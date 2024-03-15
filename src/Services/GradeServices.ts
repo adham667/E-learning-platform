@@ -24,6 +24,8 @@ const getStudentGrades = async (studentId: string) => {
 const getSpecificStudentGrades = async (studentId: string, courseId: string) => {
     try {
     const grade = await Grade.findOne({ student: studentId, course: courseId });
+    console.log(grade);
+    
     if(!grade){
         return "no grade" ;
     }

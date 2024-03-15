@@ -39,7 +39,7 @@ export const Login: React.FC = () => {
                     nav("/student", { state: { user } })
                 }
                 else{
-                    //go to professor page
+                    nav("/professor", { state: { user } })
                 }
             }
         })
@@ -55,11 +55,17 @@ export const Login: React.FC = () => {
   return (
     <div >
         <form className='container' onClick={handleSubmit}>
-        <h1 className='head'>Login</h1>                   
-            <input className='input' type="email" name="email" id="email" placeholder='E-mail'  onChange={(e)=>setemail(e.target.value)}/>
-            <input className='input' type="password" name="passwor" id="password" placeholder='password' onChange={(e)=>setpasswordword(e.target.value)}/>
-            <button className='btn' type='submit'>Login</button>
-            <button className='btn' onClick={goToSignup}>Signup</button>
+        <h1 className='head'>Login</h1>
+            <div className="mb-3">
+                <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
+                <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" onChange={(e)=>setemail(e.target.value)}/>
+            </div>   
+            <div className="mb-3">
+                <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
+                <input type="password" className="form-control" id="exampleInputPassword1" onChange={(e)=>setpasswordword(e.target.value)}/>
+            </div>                
+            <button className='btn btn-primary' type='submit'>Login</button>
+            <button className='btn btn-primary' onClick={goToSignup}>Signup</button>
         </form>
     </div>
   )

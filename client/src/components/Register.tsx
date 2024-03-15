@@ -57,7 +57,7 @@ export const Register = () => {
                     <label htmlFor="professor">Professor</label>
                 </div>
             </div>
-            <button className="btn" type="submit">Register</button>
+            <button className="btn btn-primary" type="submit">Register</button>
         </form>
     </div>
   )
